@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum AnswerStatus {
+  CORRECT
+  INCORRECT
+  UNANSWERED
+}
+
+enum PromptType {
+  CUSTOM
+  ONE
+  TWO
+}
+
+model Questions {
+  id String @id @default(uuid())
+  user_id String @unique
+  session_id String
+  Session Session @relation(fields: [session_id], references: [id])
+  question String
+  answer String
+  tta Decimal
+  status AnswerStatus
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Session {
+  id String @id @default(uuid())
+  user_id String @unique
+  questions Questions[]
+  prompt String
+  prompt_type PromptType
+  email String @unique
+  file_id String @unique
+  name String
+  feedback String
+  average_tta Decimal
+  accuracy Int
+  total_time Decimal
+  no_of_questions Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
