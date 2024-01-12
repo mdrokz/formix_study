@@ -23,35 +23,56 @@ enum PromptType {
   TWO
 }
 
-model Questions {
-  id String @id @default(uuid())
-  user_id String @unique
-  session_id String
-  Session Session @relation(fields: [session_id], references: [id])
-  question String
-  answer String
-  tta Decimal
-  status AnswerStatus
+model Question {
+  id String @id @default(uuid()) @db.Uuid
+  session_id String @db.Uuid
+  session Session @relation(fields: [session_id], references: [id])
+  title String
+  topic String
+  answer Answer[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
 
+model Answer {
+  id String @id @default(uuid()) @db.Uuid
+  attempt_id String @db.Uuid
+  attempt Attempt @relation(fields: [attempt_id], references: [id])
+  question_id String @db.Uuid
+  question Question @relation(fields: [question_id], references: [id])
+  user_answer String? @default("")
+  actual_answer String? @default("")
+  tta Decimal? @default(0)
+  status AnswerStatus? @default(UNANSWERED)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Attempt {
+  id String @id @default(uuid()) @db.Uuid
+  session_id String @db.Uuid
+  session Session @relation(fields: [session_id], references: [id])
+  answers Answer[]
+  feedback String
+  topic_feedback Json
+  average_tta Decimal @default(0)
+  total_time Decimal @default(0)
+  accuracy Int @default(0)
+}
+
 model Session {
-  id String @id @default(uuid())
-  user_id String @unique
-  questions Questions[]
+  id String @id @default(uuid()) @db.Uuid
+  user_id String @db.Uuid
+  questions Question[]
+  attempts Attempt[]
   prompt String
   prompt_type PromptType
   model String
   completion_id String
   model_usage Json
-  email String @unique
+  email String
   file_id String @unique
   name String
-  feedback String? @default("")
-  average_tta Decimal? @default(0)
-  accuracy Int? @default(0)
-  total_time Decimal? @default(0)
   no_of_questions Int? @default(0)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
