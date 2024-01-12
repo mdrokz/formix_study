@@ -76,3 +76,23 @@ export async function POST(req: NextRequest) {
         return new Response('Failed to insert answers into DB', { status: 500 })
     }
 }
+
+export async function GET(req: NextRequest) {
+    const searchParams = req.nextUrl.searchParams
+    const id = searchParams.get('id')
+
+    if (!id) return new Response('No attempt id provided', { status: 400 })
+
+    const attempt = await prisma.attempt.findUnique({
+        where: {
+            id: id
+        },
+        include: {
+            answers: true
+        }
+    })
+
+    if (!attempt) return new Response('No attempt found', { status: 404 })
+
+    return NextResponse.json(attempt)
+}
