@@ -1,0 +1,68 @@
+Project FormixStudy {
+  database_type: 'PostgreSQL'
+  Note: '''
+    # Database Docs for FormixStudy
+  '''
+}
+
+enum answer_status {
+  CORRECT
+  INCORRECT
+  UNANSWERED
+}
+
+enum prompt_type {
+  CUSTOM
+  ONE
+  TWO
+}
+
+table question {
+  id uuid pk
+  answer_id uuid
+  title string
+  topic string
+  created_at datetime
+  updated_at datetime
+}
+
+model answer {
+    id uuid pk
+    question_id uuid
+    attempt_id uuid
+    user_answer string
+    actual_answer string
+    tta float
+    status answer_status
+}
+
+table attempt {
+  id uuid pk
+  session_id uuid
+  feedback string
+  topic_feedback jsonb
+  average_tta time
+  total_time time
+  accuracy int
+}
+
+table session {
+  id uuid pk
+  prompt string
+  prompt_type prompt_type
+  user_id uuid
+  email string
+  model string
+  completion_id string
+  model_usage jsonb
+  file_id string
+  name string
+  no_of_questions int
+  created_at datetime
+  updated_at datetime
+}
+
+Ref: attempt.session_id > session.id
+Ref: answer.question_id > question.id
+Ref: answer.attempt_id > attempt.id
+Ref: question.session_id > session.id
