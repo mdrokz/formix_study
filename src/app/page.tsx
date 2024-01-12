@@ -6,7 +6,6 @@ import { Card, TabsContent, TabsList, TabsRoot, TabsTrigger } from "@radix-ui/th
 export default function Home() {
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <Card variant="classic" size="4" style={{ width: 400 }}>
       <TabsRoot defaultValue="magic_link">
         <TabsList>
@@ -19,6 +18,5 @@ export default function Home() {
         <TabsContent value="verify_otp"><Login/></TabsContent>
       </TabsRoot>
       </Card>
-    </main>
   )
 }
