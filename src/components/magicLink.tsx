@@ -14,7 +14,7 @@ export default function Login() {
       theme='dark'
       showLinks={false} 
       providers={[]}
-      redirectTo="http://localhost:3000/auth/callback"
+      redirectTo={process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL}
     />
   )
 }
