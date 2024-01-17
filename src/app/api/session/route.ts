@@ -107,7 +107,15 @@ export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
     const id = searchParams.get('id')
 
-    if (!id) return new Response('No session id provided', { status: 400 })
+    if (!id) {
+        const sessions = await prisma.session.findMany({
+            include: {
+                questions: true
+            }
+        })
+
+        return NextResponse.json(sessions)
+    }
 
     const session = await prisma.session.findUnique({
         where: {
