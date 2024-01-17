@@ -34,12 +34,11 @@ export default function Page() {
             <Heading>Your Sessions</Heading>
             {sessions.map((session) => {
                 return (
-                    <Box>
-                   <Link href={`/session/${session.id}`}>{session.name}</Link>
+                    <Box key={session.id}>
+                        <Link href={`/session/${session.id}`}>{session.name}</Link>
                     </Box>
                 )
             })}
         </Card>
     )
-  }
-  
+}
