@@ -1,43 +1,49 @@
-"use client";
-import Login from "@/components/login";
-import MagicLink from "@/components/magicLink";
-import SendOtp from "@/components/sendOtp";
-import {
-  Button,
-  Card,
-  Flex,
-  Grid,
-  Heading,
-  TabsContent,
-  TabsList,
-  TabsRoot,
-  TabsTrigger,
-} from "@radix-ui/themes";
+'use client';
+import { Button, Flex, Grid, Heading } from '@radix-ui/themes';
+import { useRef } from 'react';
+import '@/app/page.css';
 
 export default function Home() {
+  const loginContainerRef = useRef<HTMLDivElement>(null);
+
   return (
-    <Grid rows="2" className="bg-black px-40">
+    <div className="h-[100vh] overflow-y-auto snap-y snap-mandatory">
       <Flex
         direction="column"
         justify="center"
         align="center"
         gap="3"
-        className="h-[100vh]"
+        className="h-[100vh] snap-start"
       >
-        <Heading>Welcome to Formix Study</Heading>
-        <h2>Description</h2>
+        <h1 className="text-gradient lg:text-[76px] p-6 font-bold">
+          Welcome to Formix Study
+        </h1>
+        <div className="py-10 px-8 w-[60vw] text-center">
+          <p className="text-gradient text-gray-400 text-2xl leading-7">
+            Used by some of the world's largest companies, Next.js enables you
+            to create full-stack Web applications by extending the latest React
+            features, and integrating powerful Rust-based JavaScript tooling for
+            the fastest builds.
+          </p>
+        </div>
         <Button
+          size={'4'}
           onClick={() => {
-            const loginDiv = document.querySelector("#login");
-            if (loginDiv) {
-              loginDiv.scrollIntoView({ behavior: "smooth" });
+            if (loginContainerRef.current) {
+              loginContainerRef.current.scrollIntoView({
+                behavior: 'smooth',
+              });
             }
           }}
         >
           Get Started
         </Button>
       </Flex>
-      <Flex id="login" direction="column" className="h-[100vh]"></Flex>
-    </Grid>
+      <Flex
+        ref={loginContainerRef}
+        direction="column"
+        className="h-[100vh] snap-start"
+      ></Flex>
+    </div>
   );
 }
