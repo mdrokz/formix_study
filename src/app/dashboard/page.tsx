@@ -9,7 +9,7 @@ export default function Page() {
     <div className="flex items-center justify-center h-[100vh] w-full">
       <Card className="w-[40%] h-[70vh]">
         <div>
-          <Tabs.Root className="TabsRoot" defaultValue="tab1">
+          <Tabs.Root className="TabsRoot" defaultValue="sessions">
             <Tabs.List
               className="TabsList justify-center"
               aria-label="Manage your account"

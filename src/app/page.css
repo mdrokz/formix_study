@@ -1,15 +1,15 @@
 .text-gradient {
-  background: linear-gradient(180deg, #fff, #adadad);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+	background: linear-gradient(180deg, #fff, #adadad);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
 
 .auth-container {
-  /* liner gradient with cyan */
-  background: linear-gradient(180deg, #004251, #00151c);
+	/* liner gradient with cyan */
+	background: linear-gradient(180deg, #004251, #00151c);
 }
 
 .auth-container .left {
-  background: url('https://img.freepik.com/free-photo/vibrant-colors-flow-abstract-wave-pattern-generated-by-ai_188544-9781.jpg')
-    no-repeat center center/cover;
+	background: url('https://img.freepik.com/free-photo/vibrant-colors-flow-abstract-wave-pattern-generated-by-ai_188544-9781.jpg')
+		no-repeat center center/cover;
 }
