@@ -1,35 +1,22 @@
 'use client';
 
-import { Session } from '@/components/session';
+import { Sessions } from '@/components/sessions';
 import { Settings } from '@/components/settings';
 import { Card, Tabs } from '@radix-ui/themes';
 
 export default function Page() {
-  return (
-    <div className="flex items-center justify-center h-[100vh] w-full">
-      <Card className="w-[40%] h-[70vh]">
-        <div>
-          <Tabs.Root className="TabsRoot" defaultValue="sessions">
-            <Tabs.List
-              className="TabsList justify-center"
-              aria-label="Manage your account"
-            >
-              <Tabs.Trigger className="TabsTrigger w-[50%]" value="sessions">
-                Sessions
-              </Tabs.Trigger>
-              <Tabs.Trigger className="TabsTrigger w-[50%]" value="settings">
-                Settings
-              </Tabs.Trigger>
-            </Tabs.List>
-            <Tabs.Content className="TabsContent" value="sessions">
-              <Session />
-            </Tabs.Content>
-            <Tabs.Content className="TabsContent" value="settings">
-              <Settings />
-            </Tabs.Content>
-          </Tabs.Root>
-        </div>
-      </Card>
-    </div>
-  );
+	return (
+		<div className="flex flex-col">
+			<div className="flex justify-between px-4 py-4 text-white">
+				<h1>Formix Study</h1>
+				<div>
+					<a className="px-4">Sessions</a>
+					<a className="px-4">Settings</a>
+				</div>
+			</div>
+			<div className="flex h-[100vh] w-full">
+				<Sessions />
+			</div>
+		</div>
+	);
 }
