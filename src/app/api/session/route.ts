@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { openai, setupConfig, QuestionGeneratorResult, question_generator_function_config } from "@lib/openai";
 import prisma from "@lib/db";
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@lib/supabase/server';
 
 export async function POST(req: NextRequest) {
 
@@ -104,6 +105,17 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
+
+    const supabase = createClient();
+
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+        return new NextResponse('Unauthorized', { status: 401 })
+    }
+
     const searchParams = req.nextUrl.searchParams
     const id = searchParams.get('id')
 
