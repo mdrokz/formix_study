@@ -1,10 +1,18 @@
 'use client';
 
 import { Attempt } from "@prisma/client";
-import { Box, Button, Card, Heading, Link } from "@radix-ui/themes";
+import { Box, Card, Heading, Link } from "@radix-ui/themes";
 import { useState, useEffect } from "react";
 
-export default function Page() {
+type Params = {
+    params: {
+        id: string
+    }
+}
+
+export default function Page({ params }: Params) {
+
+    const session_id = params.id;
 
     const [attempts, setAttempts] = useState<Attempt[]>([]);
 
@@ -39,6 +47,7 @@ export default function Page() {
                     </Box>
                 )
             })}
+            <Link href={`/session/${session_id}/attempt`}>Start New Attempt</Link>
         </Card>
     )
 }
