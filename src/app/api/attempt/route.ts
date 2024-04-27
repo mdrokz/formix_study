@@ -82,9 +82,9 @@ export async function GET(req: NextRequest) {
     const id = searchParams.get('id')
 
     if (!id) {
-        const sessions = await prisma.session.findMany({
+        const sessions = await prisma.attempt.findMany({
             include: {
-                questions: true
+                answers: true
             }
         })
 
