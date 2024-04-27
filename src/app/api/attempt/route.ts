@@ -82,13 +82,13 @@ export async function GET(req: NextRequest) {
     const id = searchParams.get('id')
 
     if (!id) {
-        const sessions = await prisma.attempt.findMany({
+        const attempts = await prisma.attempt.findMany({
             include: {
                 answers: true
             }
         })
 
-        return NextResponse.json(sessions)
+        return NextResponse.json(attempts)
     }
 
     const attempt = await prisma.attempt.findUnique({
