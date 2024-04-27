@@ -4,7 +4,7 @@ import { Prisma, PromptType, Question, Session } from "@prisma/client";
 import { setupConfig, examiner_function_config, openai, examiner_prompt_1, examiner_prompt_2, ExaminerResult } from "@lib/openai";
 
 export type RequestBody = {
-    session: Session & {questions: Question[]},
+    session: Session & { questions: Question[] },
     questions: Record<string, string>
 }
 
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     const openai_config = setupConfig(prompt, examiner_function_config)
 
-    const questions_data = keys.map((key,i) => {
+    const questions_data = keys.map((key, i) => {
         const answer = questions[key];
 
         return {
@@ -81,7 +81,15 @@ export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
     const id = searchParams.get('id')
 
-    if (!id) return new Response('No attempt id provided', { status: 400 })
+    if (!id) {
+        const sessions = await prisma.session.findMany({
+            include: {
+                questions: true
+            }
+        })
+
+        return NextResponse.json(sessions)
+    }
 
     const attempt = await prisma.attempt.findUnique({
         where: {

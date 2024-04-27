@@ -14,7 +14,7 @@ export default function Page() {
 
     const fetchAttempts = async () => {
         try {
-            const res = await fetch(`/api/session`);
+            const res = await fetch(`/api/attempt`);
 
             if (res.ok && res.status === 200) {
                 const data = await res.json();
