@@ -1,7 +1,9 @@
 'use client';
 
+import { Session } from "@prisma/client";
 import * as Label from "@radix-ui/react-label";
 import { Box, Button, Card, Flex, Heading, Text, SelectRoot, SelectTrigger, SelectContent, SelectItem, TextArea, TextFieldInput } from "@radix-ui/themes";
+import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState } from "react";
 
 const Icon = () => {
@@ -18,6 +20,7 @@ export default function Page() {
   const [prompt, setPrompt] = useState<string>("");
   const [promptType, setPromptType] = useState<string>("ONE");
   const [name, setName] = useState<string>("");
+  const router = useRouter();
 
   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -30,10 +33,9 @@ export default function Page() {
   }
 
   const handleSubmit = () => {
-
     if (file) {
-      console.log(file)
-      console.log(prompt)
+      console.log(file);
+      console.log(prompt);
       const formData = new FormData();
       formData.append('file', file);
       formData.append('name', name);
@@ -42,19 +44,21 @@ export default function Page() {
 
       fetch('/api/session', {
         method: 'POST',
-        body: formData
+        body: formData,
       })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
+        .then(async (response) => {
+          if (response.ok) {
+            const session = await response.json() as Session;
+            router.push(`/session/${session.id}`);
+          }
         })
-        .catch(error => {
-          console.error(error)
-        })
+        .catch((error) => {
+          console.error(error);
+        });
     } else {
-      console.error('No file uploaded')
+      console.error('No file uploaded');
     }
-  }
+  };
 
   return (
     <Card variant="classic" size="4" style={{ width: 400 }}>
