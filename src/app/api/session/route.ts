@@ -54,10 +54,8 @@ export async function POST(req: NextRequest) {
             data: { user },
         } = await supabase.auth.getUser()
 
-        const { data, error } = await supabase.storage.from('docs').upload(`${user?.id}/${file.name}`, file);
-
-        if (error) return NextResponse.json({ error, line: "54" })
-
+      
+        //TODO: Implement transaction for db operations to maintain integrity
 
         const session: Prisma.SessionCreateInput = {
             email: user?.email!,
@@ -65,7 +63,6 @@ export async function POST(req: NextRequest) {
             prompt_type: prompt_type as PromptType,
             prompt: prompt ?? "",
             completion_id: openai_result.id,
-            file_id: data.path,
             name: name,
             model: openai_config.model as string,
             model_usage: openai_result.usage! as unknown as Prisma.JsonObject,
@@ -76,6 +73,20 @@ export async function POST(req: NextRequest) {
 
         if (session_res) {
 
+            const { data, error } = await supabase.storage.from('docs').upload(`${user?.id}/${session_res.id}/${file.name}`, file);
+
+            if (error) return NextResponse.json({ error, line: "54" })
+
+                await prisma.session.update({
+                    where: {
+                        id: session_res.id
+                    },
+                    data: {
+                        file_path: data.path
+                    }
+                });
+
+                
             const questions_data: Prisma.QuestionCreateManyInput[] = questions.map((question) => {
                 return {
                     session_id: session_res.id,
@@ -90,10 +101,7 @@ export async function POST(req: NextRequest) {
 
             console.log(questions_res.count);
 
-            const url = req.nextUrl.clone()
-            url.pathname = `/session/${session_res?.id}/`
-
-            return NextResponse.redirect(url)
+            return NextResponse.json(session_res);
         } else {
             return NextResponse.json({ error: 'No questions generated' })
         }
